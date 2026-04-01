@@ -18,7 +18,7 @@ namespace DoAn_LTQL
         private DataProvider() { }
 
     
-       string connectionString = @"Server=.;Database=QuanLyCafe;Trusted_Connection=True;TrustServerCertificate=True;";
+       string connectionString = @"Server=.\SQLEXPRESS;Database=QuanLyCafe;Trusted_Connection=True;TrustServerCertificate=True;";
    
         public int ExecuteNonQuery(string query)
         {

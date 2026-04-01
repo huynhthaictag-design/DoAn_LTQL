@@ -19,6 +19,44 @@ namespace DoAn_LTQL
             cbDanhMuc.DataSource = dataDanhMuc;
             cbDanhMuc.DisplayMember = "TenDanhMuc"; // Cái chữ hiện ra trên màn hình cho người dùng thấy
             cbDanhMuc.ValueMember = "MaDanhMuc";
+
+            LoadTaiKhoan();
+        }
+
+        private void LoadTaiKhoan()
+        {
+            string query = "SELECT * FROM TAIKHOAN";
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+
+            dtgTaiKhoan.DataSource = data;
+            dtgTaiKhoan.ReadOnly = true;
+
+            if (dtgTaiKhoan.Columns.Contains("PhanQuyenCheckBox"))
+                dtgTaiKhoan.Columns.Remove("PhanQuyenCheckBox");
+
+
+            DataGridViewCheckBoxColumn checkColumn = new DataGridViewCheckBoxColumn();
+            checkColumn.Name = "PhanQuyenCheckBox";
+            checkColumn.HeaderText = "Quyền Admin";
+            checkColumn.DataPropertyName = "PhanQuyen";
+            checkColumn.TrueValue = 1;
+            checkColumn.FalseValue = 0;
+
+            dtgTaiKhoan.Columns.Add(checkColumn);
+
+
+            dtgTaiKhoan.Columns["TenDangNhap"].HeaderText = "Tên đăng nhập";
+            dtgTaiKhoan.Columns["MatKhau"].HeaderText = "Mật khẩu";
+            dtgTaiKhoan.Columns["TenHienThi"].HeaderText = "Tên hiển thị";
+            dtgTaiKhoan.Columns["PhanQuyen"].Visible = false;
+
+            dtgTaiKhoan.Columns["TenHienThi"].DisplayIndex = 0;
+            dtgTaiKhoan.Columns["TenDangNhap"].DisplayIndex = 1;
+            dtgTaiKhoan.Columns["MatKhau"].DisplayIndex = 2;
+            dtgTaiKhoan.Columns["PhanQuyenCheckBox"].DisplayIndex = 3;
+
+
         }
 
         private void btnXem_Click(object sender, EventArgs e)
@@ -131,18 +169,116 @@ namespace DoAn_LTQL
 
         private void dtgvThucUong_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           
+
             if (e.RowIndex >= 0)
             {
-    
+
                 DataGridViewRow row = dtgvThucUong.Rows[e.RowIndex];
 
-           
+
                 txtMaMon.Text = row.Cells["MaThucUong"].Value.ToString();
                 txtTenMon.Text = row.Cells["TenThucUong"].Value.ToString();
                 cbDanhMuc.SelectedValue = row.Cells["MaDanhMuc"].Value;
                 ndGiaTien.Value = Convert.ToDecimal(row.Cells["GiaBan"].Value);
             }
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnThemTK_Click(object sender, EventArgs e)
+        {
+            frmThongtinTaiKhoan f = new frmThongtinTaiKhoan();
+            f.ShowDialog();
+            LoadTaiKhoan();
+        }
+
+        private void btnSuaTK_Click(object sender, EventArgs e)
+        {
+            if (dtgTaiKhoan.SelectedRows.Count > 0)
+            {
+                // Lấy dòng đang chọn
+                DataGridViewRow row = dtgTaiKhoan.SelectedRows[0];
+                string tenHienThi = row.Cells["TenHienThi"].Value.ToString();
+                string tenDangNhap = row.Cells["TenDangNhap"].Value.ToString();
+                string matKhau = row.Cells["MatKhau"].Value.ToString();
+                int phanQuyen = Convert.ToInt32(row.Cells["PhanQuyen"].Value);
+
+                bool isEdit = true;
+
+                // Mở form và truyền dữ liệu qua Constructor hoặc Property
+                frmThongtinTaiKhoan f = new frmThongtinTaiKhoan(tenHienThi, tenDangNhap, matKhau, phanQuyen, isEdit);
+                f.ShowDialog();
+                LoadTaiKhoan();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn tài khoản muốn sửa!");
+            }
+        }
+
+        private void btnXoaTK_Click(object sender, EventArgs e)
+        {
+            if (dtgTaiKhoan.SelectedRows.Count > 0)
+            {
+                string userName = dtgTaiKhoan.SelectedRows[0].Cells["TenDangNhap"].Value.ToString();
+
+
+                if (MessageBox.Show($"Bạn có chắc chắn muốn xóa tài khoản {userName}?", "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    string query = $"DELETE TAIKHOAN WHERE TenDangNhap = '{userName}'";
+                    if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+                    {
+                        MessageBox.Show("Xóa thành công!");
+                        LoadTaiKhoan();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần xóa!");
+            }
+        }
+
+        private void btnTimTK_Click(object sender, EventArgs e)
+        {
+            string keyword = txtTimTK.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                LoadTaiKhoan();
+                return;
+            }
+
+            string query = "";
+
+            if (rdNameTK.Checked)
+            {
+                // Tìm theo tên hiển thị
+                query = $"SELECT * FROM TAIKHOAN WHERE TenHienThi LIKE N'%{keyword}%'";
+            }
+            else if (rdAccTK.Checked)
+            {
+                // Tìm theo tên đăng nhập
+                query = $"SELECT * FROM TAIKHOAN WHERE TenDangNhap LIKE '%{keyword}%'";
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn kiểu tìm kiếm!");
+                return;
+            }
+
+            dtgTaiKhoan.DataSource = DataProvider.Instance.ExecuteQuery(query);
+        }
+
+        private void btnHuyTK_Click(object sender, EventArgs e)
+        {
+            txtTimTK.Clear();
+            rdAccTK.Checked = false;
+            rdNameTK.Checked = false;
+            LoadTaiKhoan() ;
         }
     }
 }

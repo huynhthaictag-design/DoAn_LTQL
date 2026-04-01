@@ -48,12 +48,26 @@
             tabPage3 = new TabPage();
             tabPage2 = new TabPage();
             tabPage1 = new TabPage();
+            groupBox2 = new GroupBox();
+            txtTimTK = new TextBox();
+            btnTimTK = new Button();
+            rdAccTK = new RadioButton();
+            rdNameTK = new RadioButton();
+            label5 = new Label();
+            btnSuaTK = new Button();
+            btnXoaTK = new Button();
+            btnThemTK = new Button();
+            dtgTaiKhoan = new DataGridView();
             tabControl1 = new TabControl();
+            btnHuyTK = new Button();
             tabPage4.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ndGiaTien).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dtgvThucUong).BeginInit();
             panel1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgTaiKhoan).BeginInit();
             tabControl1.SuspendLayout();
             SuspendLayout();
             // 
@@ -66,7 +80,7 @@
             tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(777, 350);
+            tabPage4.Size = new Size(777, 397);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Thức Uống";
             tabPage4.UseVisualStyleBackColor = true;
@@ -172,10 +186,10 @@
             // dtgvThucUong
             // 
             dtgvThucUong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dtgvThucUong.Location = new Point(-4, 9);
+            dtgvThucUong.Location = new Point(-4, 0);
             dtgvThucUong.Name = "dtgvThucUong";
             dtgvThucUong.RowHeadersWidth = 51;
-            dtgvThucUong.Size = new Size(528, 345);
+            dtgvThucUong.Size = new Size(528, 391);
             dtgvThucUong.TabIndex = 2;
             dtgvThucUong.CellClick += dtgvThucUong_CellClick;
             // 
@@ -236,7 +250,7 @@
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(777, 350);
+            tabPage3.Size = new Size(777, 397);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Bàn";
             tabPage3.UseVisualStyleBackColor = true;
@@ -246,20 +260,133 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(777, 350);
+            tabPage2.Size = new Size(777, 397);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Danh mục";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(groupBox2);
+            tabPage1.Controls.Add(btnSuaTK);
+            tabPage1.Controls.Add(btnXoaTK);
+            tabPage1.Controls.Add(btnThemTK);
+            tabPage1.Controls.Add(dtgTaiKhoan);
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(777, 350);
+            tabPage1.Size = new Size(777, 397);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "Tài Khoản 2";
+            tabPage1.Text = "Tài Khoản";
             tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Click += tabPage1_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(txtTimTK);
+            groupBox2.Controls.Add(btnHuyTK);
+            groupBox2.Controls.Add(btnTimTK);
+            groupBox2.Controls.Add(rdAccTK);
+            groupBox2.Controls.Add(rdNameTK);
+            groupBox2.Controls.Add(label5);
+            groupBox2.Location = new Point(560, 172);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(211, 219);
+            groupBox2.TabIndex = 2;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Tìm kiếm";
+            // 
+            // txtTimTK
+            // 
+            txtTimTK.Location = new Point(21, 122);
+            txtTimTK.Name = "txtTimTK";
+            txtTimTK.Size = new Size(172, 27);
+            txtTimTK.TabIndex = 2;
+            // 
+            // btnTimTK
+            // 
+            btnTimTK.Location = new Point(18, 164);
+            btnTimTK.Name = "btnTimTK";
+            btnTimTK.Size = new Size(78, 38);
+            btnTimTK.TabIndex = 1;
+            btnTimTK.Text = "Tìm";
+            btnTimTK.UseVisualStyleBackColor = true;
+            btnTimTK.Click += btnTimTK_Click;
+            // 
+            // rdAccTK
+            // 
+            rdAccTK.AutoSize = true;
+            rdAccTK.Location = new Point(44, 86);
+            rdAccTK.Name = "rdAccTK";
+            rdAccTK.Size = new Size(128, 24);
+            rdAccTK.TabIndex = 1;
+            rdAccTK.TabStop = true;
+            rdAccTK.Text = "Tên đăng nhập";
+            rdAccTK.UseVisualStyleBackColor = true;
+            // 
+            // rdNameTK
+            // 
+            rdNameTK.AutoSize = true;
+            rdNameTK.Location = new Point(44, 56);
+            rdNameTK.Name = "rdNameTK";
+            rdNameTK.Size = new Size(106, 24);
+            rdNameTK.TabIndex = 1;
+            rdNameTK.TabStop = true;
+            rdNameTK.Text = "Tên hiển thị";
+            rdNameTK.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(44, 33);
+            label5.Name = "label5";
+            label5.Size = new Size(68, 20);
+            label5.TabIndex = 0;
+            label5.Text = "Tìm theo";
+            // 
+            // btnSuaTK
+            // 
+            btnSuaTK.Location = new Point(618, 128);
+            btnSuaTK.Name = "btnSuaTK";
+            btnSuaTK.Size = new Size(94, 38);
+            btnSuaTK.TabIndex = 1;
+            btnSuaTK.Text = "Sửa";
+            btnSuaTK.UseVisualStyleBackColor = true;
+            btnSuaTK.Click += btnSuaTK_Click;
+            // 
+            // btnXoaTK
+            // 
+            btnXoaTK.Location = new Point(618, 73);
+            btnXoaTK.Name = "btnXoaTK";
+            btnXoaTK.Size = new Size(94, 38);
+            btnXoaTK.TabIndex = 1;
+            btnXoaTK.Text = "Xoá";
+            btnXoaTK.UseVisualStyleBackColor = true;
+            btnXoaTK.Click += btnXoaTK_Click;
+            // 
+            // btnThemTK
+            // 
+            btnThemTK.Location = new Point(618, 17);
+            btnThemTK.Name = "btnThemTK";
+            btnThemTK.Size = new Size(94, 38);
+            btnThemTK.TabIndex = 1;
+            btnThemTK.Text = "Thêm";
+            btnThemTK.UseVisualStyleBackColor = true;
+            btnThemTK.Click += btnThemTK_Click;
+            // 
+            // dtgTaiKhoan
+            // 
+            dtgTaiKhoan.AllowUserToAddRows = false;
+            dtgTaiKhoan.AllowUserToDeleteRows = false;
+            dtgTaiKhoan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgTaiKhoan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgTaiKhoan.Location = new Point(0, 0);
+            dtgTaiKhoan.MultiSelect = false;
+            dtgTaiKhoan.Name = "dtgTaiKhoan";
+            dtgTaiKhoan.RowHeadersWidth = 51;
+            dtgTaiKhoan.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgTaiKhoan.Size = new Size(554, 397);
+            dtgTaiKhoan.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -267,19 +394,29 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
-            tabControl1.Location = new Point(11, -3);
+            tabControl1.Location = new Point(3, 12);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(785, 383);
+            tabControl1.Size = new Size(785, 430);
             tabControl1.TabIndex = 1;
             // 
-            // Form1
+            // btnHuyTK
+            // 
+            btnHuyTK.Location = new Point(115, 164);
+            btnHuyTK.Name = "btnHuyTK";
+            btnHuyTK.Size = new Size(78, 38);
+            btnHuyTK.TabIndex = 1;
+            btnHuyTK.Text = "Huỷ";
+            btnHuyTK.UseVisualStyleBackColor = true;
+            btnHuyTK.Click += btnHuyTK_Click;
+            // 
+            // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(801, 454);
             Controls.Add(tabControl1);
-            Name = "Form1";
+            Name = "FormAdmin";
             Text = "Form1";
             Load += Form1_Load;
             tabPage4.ResumeLayout(false);
@@ -288,6 +425,10 @@
             ((System.ComponentModel.ISupportInitialize)ndGiaTien).EndInit();
             ((System.ComponentModel.ISupportInitialize)dtgvThucUong).EndInit();
             panel1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgTaiKhoan).EndInit();
             tabControl1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -315,5 +456,16 @@
         private TabPage tabPage1;
         private TabControl tabControl1;
         private Button btnNhap;
+        private DataGridView dtgTaiKhoan;
+        private GroupBox groupBox2;
+        private TextBox txtTimTK;
+        private Button btnTimTK;
+        private RadioButton rdAccTK;
+        private RadioButton rdNameTK;
+        private Label label5;
+        private Button btnSuaTK;
+        private Button btnXoaTK;
+        private Button btnThemTK;
+        private Button btnHuyTK;
     }
 }
