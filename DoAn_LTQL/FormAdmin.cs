@@ -17,13 +17,15 @@ namespace DoAn_LTQL
             DataTable dataDanhMuc = DataProvider.Instance.ExecuteQuery(queryDanhMuc);
 
             cbDanhMuc.DataSource = dataDanhMuc;
-            cbDanhMuc.DisplayMember = "TenDanhMuc"; 
+            cbDanhMuc.DisplayMember = "TenDanhMuc";
             cbDanhMuc.ValueMember = "MaDanhMuc";
             cbTrangThai.DataSource = dataDanhMuc;
             cbTrangThai.DisplayMember = "TenDanhMuc";
 
 
             LoadTaiKhoan();
+
+            btnXemDanhMuc_Click(sender, e);
         }
 
         private void LoadTaiKhoan()
@@ -67,7 +69,7 @@ namespace DoAn_LTQL
             string query = "SELECT * FROM ThucUong";
             dtgvThucUong.DataSource = DataProvider.Instance.ExecuteQuery(query);
 
-        
+
 
         }
 
@@ -375,6 +377,124 @@ namespace DoAn_LTQL
                 txtMaBan.Text = row.Cells["MaBan"].Value.ToString();
                 txtTenBan.Text = row.Cells["TenBan"].Value.ToString();
                 cbTrangThai.Text = row.Cells["TrangThai"].Value.ToString();
+            }
+        }
+
+        private void btnXemDanhMuc_Click(object sender, EventArgs e)
+        {
+            string query = "SELECT * FROM DanhMuc";
+            dtgvDanhMuc.DataSource = DataProvider.Instance.ExecuteQuery(query);
+        }
+
+        private void btnThemDanhMuc_Click(object sender, EventArgs e)
+        {
+            string tenDM = txtTenDanhMuc.Text;
+
+            if (string.IsNullOrWhiteSpace(tenDM))
+            {
+                MessageBox.Show("Vui lòng nhập Tên danh mục!", "Nhắc nhở");
+                return;
+            }
+
+            string query = $"INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'{tenDM}')";
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Thêm danh mục thành công!", "Thông báo");
+                btnXemDanhMuc_Click(sender, e);
+
+                // Mẹo pro: Nhớ cập nhật lại cái ComboBox Danh Mục ở bên Tab Thức Uống nhé
+                // LoadDanhMucIntoComboBox(); (Nếu bạn có viết hàm này)
+            }
+        }
+        
+        /*private void btnThemDanhMuc_Click(object sender, EventArgs e)
+        {
+            string tenDM = txtTenDanhMuc.Text.Trim();
+
+            if (string.IsNullOrEmpty(tenDM))
+            {
+                MessageBox.Show("Vui lòng nhập tên danh mục!");
+                return;
+            }
+
+            string query = "INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'" + tenDM + "')";
+
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+
+            if (result > 0)
+            {
+                MessageBox.Show("Thêm thành công!");
+
+                // reload lại bảng
+                btnXemDanhMuc_Click(sender, e);
+
+                // clear ô nhập
+                txtTenDanhMuc.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Thêm thất bại!");
+            }
+        }*/
+
+        private void btnSuaDanhMuc_Click(object sender, EventArgs e)
+        {
+            string id = txtMaDanhMuc.Text;
+            string tenDM = txtTenDanhMuc.Text;
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                MessageBox.Show("Vui lòng chọn danh mục cần sửa!", "Nhắc nhở");
+                return;
+            }
+
+            string query = $"UPDATE DanhMuc SET TenDanhMuc = N'{tenDM}' WHERE MaDanhMuc = {id}";
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Sửa danh mục thành công!", "Thông báo");
+                btnXemDanhMuc_Click(sender, e);
+            }
+        }
+
+        private void btnXoaDanhMuc_Click(object sender, EventArgs e)
+        {
+            string id = txtMaDanhMuc.Text;
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                MessageBox.Show("Vui lòng chọn danh mục cần xóa!", "Nhắc nhở");
+                return;
+            }
+
+            string query = $"DELETE FROM DanhMuc WHERE MaDanhMuc = {id}";
+
+            if (MessageBox.Show("Bạn có chắc chắn muốn xóa danh mục này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                try
+                {
+                    if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+                    {
+                        MessageBox.Show("Xóa danh mục thành công!", "Thông báo");
+                        btnXemDanhMuc_Click(sender, e);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Không thể xóa! Danh mục này đang chứa các món đồ uống. Vui lòng xóa hết các món thuộc danh mục này trước.\nLỗi chi tiết: " + ex.Message, "Lỗi SQL");
+                }
+            }
+        }
+
+        private void dtgvDanhMuc_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgvDanhMuc.Rows[e.RowIndex];
+
+                txtMaDanhMuc.Text = row.Cells["MaDanhMuc"].Value.ToString();
+                txtTenDanhMuc.Text = row.Cells["TenDanhMuc"].Value.ToString();
             }
         }
     }
