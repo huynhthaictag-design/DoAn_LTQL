@@ -46,10 +46,24 @@
             btnSua = new Button();
             btnThem = new Button();
             tabPage3 = new TabPage();
+            groupBox3 = new GroupBox();
+            cbTrangThai = new ComboBox();
+            txtTenBan = new TextBox();
+            txtMaBan = new TextBox();
+            label7 = new Label();
+            label8 = new Label();
+            label9 = new Label();
+            dtgvBan = new DataGridView();
+            panel2 = new Panel();
+            btnXemBan = new Button();
+            btnXoaBan = new Button();
+            btnSuaBan = new Button();
+            btnThemBan = new Button();
             tabPage2 = new TabPage();
             tabPage1 = new TabPage();
             groupBox2 = new GroupBox();
             txtTimTK = new TextBox();
+            btnHuyTK = new Button();
             btnTimTK = new Button();
             rdAccTK = new RadioButton();
             rdNameTK = new RadioButton();
@@ -59,12 +73,15 @@
             btnThemTK = new Button();
             dtgTaiKhoan = new DataGridView();
             tabControl1 = new TabControl();
-            btnHuyTK = new Button();
             tabPage4.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ndGiaTien).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dtgvThucUong).BeginInit();
             panel1.SuspendLayout();
+            tabPage3.SuspendLayout();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgvBan).BeginInit();
+            panel2.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtgTaiKhoan).BeginInit();
@@ -199,9 +216,9 @@
             panel1.Controls.Add(btnXoa);
             panel1.Controls.Add(btnSua);
             panel1.Controls.Add(btnThem);
-            panel1.Location = new Point(522, 6);
+            panel1.Location = new Point(523, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(249, 86);
+            panel1.Size = new Size(248, 92);
             panel1.TabIndex = 1;
             // 
             // btnXem
@@ -247,6 +264,9 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(groupBox3);
+            tabPage3.Controls.Add(dtgvBan);
+            tabPage3.Controls.Add(panel2);
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
@@ -254,6 +274,138 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Bàn";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(cbTrangThai);
+            groupBox3.Controls.Add(txtTenBan);
+            groupBox3.Controls.Add(txtMaBan);
+            groupBox3.Controls.Add(label7);
+            groupBox3.Controls.Add(label8);
+            groupBox3.Controls.Add(label9);
+            groupBox3.Location = new Point(527, 101);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(250, 290);
+            groupBox3.TabIndex = 6;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Thêm thông tin";
+            groupBox3.Visible = false;
+            // 
+            // cbTrangThai
+            // 
+            cbTrangThai.FormattingEnabled = true;
+            cbTrangThai.Items.AddRange(new object[] { "Trống", "Có người" });
+            cbTrangThai.Location = new Point(78, 113);
+            cbTrangThai.Name = "cbTrangThai";
+            cbTrangThai.Size = new Size(163, 28);
+            cbTrangThai.TabIndex = 4;
+            // 
+            // txtTenBan
+            // 
+            txtTenBan.Location = new Point(78, 71);
+            txtTenBan.Name = "txtTenBan";
+            txtTenBan.Size = new Size(166, 27);
+            txtTenBan.TabIndex = 3;
+            // 
+            // txtMaBan
+            // 
+            txtMaBan.Location = new Point(78, 31);
+            txtMaBan.Name = "txtMaBan";
+            txtMaBan.ReadOnly = true;
+            txtMaBan.Size = new Size(166, 27);
+            txtMaBan.TabIndex = 3;
+            txtMaBan.Visible = false;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(2, 121);
+            label7.Name = "label7";
+            label7.Size = new Size(78, 20);
+            label7.TabIndex = 2;
+            label7.Text = "Trạng Thái";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(0, 78);
+            label8.Name = "label8";
+            label8.Size = new Size(61, 20);
+            label8.TabIndex = 0;
+            label8.Text = "Tên Bàn";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(2, 38);
+            label9.Name = "label9";
+            label9.Size = new Size(59, 20);
+            label9.TabIndex = 0;
+            label9.Text = "Mã Bàn";
+            // 
+            // dtgvBan
+            // 
+            dtgvBan.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgvBan.Location = new Point(0, 3);
+            dtgvBan.Name = "dtgvBan";
+            dtgvBan.RowHeadersWidth = 51;
+            dtgvBan.Size = new Size(528, 391);
+            dtgvBan.TabIndex = 5;
+            dtgvBan.CellClick += dtgvBan_CellClick;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(btnXemBan);
+            panel2.Controls.Add(btnXoaBan);
+            panel2.Controls.Add(btnSuaBan);
+            panel2.Controls.Add(btnThemBan);
+            panel2.Location = new Point(527, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(248, 92);
+            panel2.TabIndex = 4;
+            // 
+            // btnXemBan
+            // 
+            btnXemBan.Location = new Point(162, 53);
+            btnXemBan.Name = "btnXemBan";
+            btnXemBan.Size = new Size(94, 29);
+            btnXemBan.TabIndex = 1;
+            btnXemBan.Text = "Xem";
+            btnXemBan.UseVisualStyleBackColor = true;
+            btnXemBan.Click += btnXemBan_Click;
+            // 
+            // btnXoaBan
+            // 
+            btnXoaBan.Location = new Point(158, 3);
+            btnXoaBan.Name = "btnXoaBan";
+            btnXoaBan.Size = new Size(94, 29);
+            btnXoaBan.TabIndex = 1;
+            btnXoaBan.Text = "Xóa";
+            btnXoaBan.UseVisualStyleBackColor = true;
+            btnXoaBan.Visible = false;
+            btnXoaBan.Click += btnXoaBan_Click;
+            // 
+            // btnSuaBan
+            // 
+            btnSuaBan.Location = new Point(0, 53);
+            btnSuaBan.Name = "btnSuaBan";
+            btnSuaBan.Size = new Size(94, 29);
+            btnSuaBan.TabIndex = 1;
+            btnSuaBan.Text = "Sửa";
+            btnSuaBan.UseVisualStyleBackColor = true;
+            btnSuaBan.Visible = false;
+            btnSuaBan.Click += btnSuaBan_Click;
+            // 
+            // btnThemBan
+            // 
+            btnThemBan.Location = new Point(0, 0);
+            btnThemBan.Name = "btnThemBan";
+            btnThemBan.Size = new Size(94, 32);
+            btnThemBan.TabIndex = 0;
+            btnThemBan.Text = "Thêm";
+            btnThemBan.UseVisualStyleBackColor = true;
+            btnThemBan.Visible = false;
+            btnThemBan.Click += btnThemBan_Click;
             // 
             // tabPage2
             // 
@@ -302,6 +454,16 @@
             txtTimTK.Name = "txtTimTK";
             txtTimTK.Size = new Size(172, 27);
             txtTimTK.TabIndex = 2;
+            // 
+            // btnHuyTK
+            // 
+            btnHuyTK.Location = new Point(115, 164);
+            btnHuyTK.Name = "btnHuyTK";
+            btnHuyTK.Size = new Size(78, 38);
+            btnHuyTK.TabIndex = 1;
+            btnHuyTK.Text = "Huỷ";
+            btnHuyTK.UseVisualStyleBackColor = true;
+            btnHuyTK.Click += btnHuyTK_Click;
             // 
             // btnTimTK
             // 
@@ -362,6 +524,7 @@
             btnXoaTK.TabIndex = 1;
             btnXoaTK.Text = "Xoá";
             btnXoaTK.UseVisualStyleBackColor = true;
+            btnXoaTK.UseWaitCursor = true;
             btnXoaTK.Click += btnXoaTK_Click;
             // 
             // btnThemTK
@@ -400,16 +563,6 @@
             tabControl1.Size = new Size(785, 430);
             tabControl1.TabIndex = 1;
             // 
-            // btnHuyTK
-            // 
-            btnHuyTK.Location = new Point(115, 164);
-            btnHuyTK.Name = "btnHuyTK";
-            btnHuyTK.Size = new Size(78, 38);
-            btnHuyTK.TabIndex = 1;
-            btnHuyTK.Text = "Huỷ";
-            btnHuyTK.UseVisualStyleBackColor = true;
-            btnHuyTK.Click += btnHuyTK_Click;
-            // 
             // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -425,6 +578,11 @@
             ((System.ComponentModel.ISupportInitialize)ndGiaTien).EndInit();
             ((System.ComponentModel.ISupportInitialize)dtgvThucUong).EndInit();
             panel1.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgvBan).EndInit();
+            panel2.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
@@ -467,5 +625,18 @@
         private Button btnXoaTK;
         private Button btnThemTK;
         private Button btnHuyTK;
+        private GroupBox groupBox3;
+        private ComboBox cbTrangThai;
+        private TextBox txtTenBan;
+        private TextBox txtMaBan;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private DataGridView dtgvBan;
+        private Panel panel2;
+        private Button btnXemBan;
+        private Button btnXoaBan;
+        private Button btnSuaBan;
+        private Button btnThemBan;
     }
 }

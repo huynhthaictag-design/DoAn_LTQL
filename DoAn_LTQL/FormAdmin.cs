@@ -17,8 +17,11 @@ namespace DoAn_LTQL
             DataTable dataDanhMuc = DataProvider.Instance.ExecuteQuery(queryDanhMuc);
 
             cbDanhMuc.DataSource = dataDanhMuc;
-            cbDanhMuc.DisplayMember = "TenDanhMuc"; // Cái chữ hiện ra trên màn hình cho người dùng thấy
+            cbDanhMuc.DisplayMember = "TenDanhMuc"; 
             cbDanhMuc.ValueMember = "MaDanhMuc";
+            cbTrangThai.DataSource = dataDanhMuc;
+            cbTrangThai.DisplayMember = "TenDanhMuc";
+
 
             LoadTaiKhoan();
         }
@@ -63,6 +66,9 @@ namespace DoAn_LTQL
         {
             string query = "SELECT * FROM ThucUong";
             dtgvThucUong.DataSource = DataProvider.Instance.ExecuteQuery(query);
+
+        
+
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -278,7 +284,98 @@ namespace DoAn_LTQL
             txtTimTK.Clear();
             rdAccTK.Checked = false;
             rdNameTK.Checked = false;
-            LoadTaiKhoan() ;
+            LoadTaiKhoan();
+        }
+
+        private void btnXemBan_Click(object sender, EventArgs e)
+        {
+            string query = "SELECT * FROM Ban";
+            dtgvBan.DataSource = DataProvider.Instance.ExecuteQuery(query);
+            btnThemBan.Visible = true;
+            btnSuaBan.Visible = true;
+            btnXoaBan.Visible = true;
+            groupBox3.Visible = true;
+        }
+
+        private void btnThemBan_Click(object sender, EventArgs e)
+        {
+            string tenBan = txtTenBan.Text;
+
+            if (string.IsNullOrWhiteSpace(tenBan))
+            {
+                MessageBox.Show("Vui lòng nhập Tên bàn!", "Nhắc nhở");
+                return;
+            }
+
+            // Khi thêm bàn mới, mặc định trạng thái luôn là 'Trống'
+            string query = $"INSERT INTO Ban (TenBan, TrangThai) VALUES (N'{tenBan}', N'Trống')";
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Thêm bàn thành công!", "Thông báo");
+                btnXemBan_Click(sender, e);
+            }
+        }
+
+        private void btnSuaBan_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtMaBan.Text))
+            {
+                MessageBox.Show("Vui lòng chọn bàn cần sửa từ danh sách bên trái!", "Nhắc nhở");
+                return;
+            }
+
+            string id = txtMaBan.Text;
+            string tenBan = txtTenBan.Text;
+            string trangThai = cbTrangThai.Text;
+
+            string query = $"UPDATE Ban SET TenBan = N'{tenBan}', TrangThai = N'{trangThai}' WHERE MaBan = {id}";
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Sửa thông tin bàn thành công!", "Thông báo");
+                btnXemBan_Click(sender, e); // Load lại lưới
+            }
+        }
+
+        private void btnXoaBan_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtMaBan.Text))
+            {
+                MessageBox.Show("Vui lòng chọn bàn cần xóa!", "Nhắc nhở");
+                return;
+            }
+
+            string id = txtMaBan.Text;
+            string query = $"DELETE FROM Ban WHERE MaBan = {id}";
+
+            if (MessageBox.Show("Bạn có chắc chắn muốn xóa bàn này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                try
+                {
+                    if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+                    {
+                        MessageBox.Show("Xóa bàn thành công!", "Thông báo");
+                        btnXemBan_Click(sender, e); // Load lại lưới
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Không thể xóa bàn này vì có thể nó đang chứa dữ liệu Hóa Đơn!\nLỗi chi tiết: " + ex.Message, "Lỗi SQL");
+                }
+            }
+        }
+
+        private void dtgvBan_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgvBan.Rows[e.RowIndex];
+
+                txtMaBan.Text = row.Cells["MaBan"].Value.ToString();
+                txtTenBan.Text = row.Cells["TenBan"].Value.ToString();
+                cbTrangThai.Text = row.Cells["TrangThai"].Value.ToString();
+            }
         }
     }
 }
