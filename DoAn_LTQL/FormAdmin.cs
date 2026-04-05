@@ -4,6 +4,7 @@ namespace DoAn_LTQL
 {
     public partial class FormAdmin : Form
     {
+       
         public FormAdmin()
         {
             InitializeComponent();
@@ -19,8 +20,7 @@ namespace DoAn_LTQL
             cbDanhMuc.DataSource = dataDanhMuc;
             cbDanhMuc.DisplayMember = "TenDanhMuc";
             cbDanhMuc.ValueMember = "MaDanhMuc";
-            cbTrangThai.DataSource = dataDanhMuc;
-            cbTrangThai.DisplayMember = "TenDanhMuc";
+      
 
 
             LoadTaiKhoan();
@@ -403,40 +403,9 @@ namespace DoAn_LTQL
                 MessageBox.Show("Thêm danh mục thành công!", "Thông báo");
                 btnXemDanhMuc_Click(sender, e);
 
-                // Mẹo pro: Nhớ cập nhật lại cái ComboBox Danh Mục ở bên Tab Thức Uống nhé
-                // LoadDanhMucIntoComboBox(); (Nếu bạn có viết hàm này)
+                
             }
         }
-        
-        /*private void btnThemDanhMuc_Click(object sender, EventArgs e)
-        {
-            string tenDM = txtTenDanhMuc.Text.Trim();
-
-            if (string.IsNullOrEmpty(tenDM))
-            {
-                MessageBox.Show("Vui lòng nhập tên danh mục!");
-                return;
-            }
-
-            string query = "INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'" + tenDM + "')";
-
-            int result = DataProvider.Instance.ExecuteNonQuery(query);
-
-            if (result > 0)
-            {
-                MessageBox.Show("Thêm thành công!");
-
-                // reload lại bảng
-                btnXemDanhMuc_Click(sender, e);
-
-                // clear ô nhập
-                txtTenDanhMuc.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Thêm thất bại!");
-            }
-        }*/
 
         private void btnSuaDanhMuc_Click(object sender, EventArgs e)
         {
@@ -496,6 +465,11 @@ namespace DoAn_LTQL
                 txtMaDanhMuc.Text = row.Cells["MaDanhMuc"].Value.ToString();
                 txtTenDanhMuc.Text = row.Cells["TenDanhMuc"].Value.ToString();
             }
+        }
+
+        private void cbTrangThai_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

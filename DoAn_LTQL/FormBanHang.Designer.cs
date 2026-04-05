@@ -60,6 +60,7 @@
             cbDanhMuc.Name = "cbDanhMuc";
             cbDanhMuc.Size = new Size(132, 28);
             cbDanhMuc.TabIndex = 1;
+            cbDanhMuc.SelectedIndexChanged += cbDanhMuc_SelectedIndexChanged;
             // 
             // cbThucUong
             // 
@@ -84,6 +85,7 @@
             btnThemMon.TabIndex = 3;
             btnThemMon.Text = "Thêm Món";
             btnThemMon.UseVisualStyleBackColor = true;
+            btnThemMon.Click += btnThemMon_Click;
             // 
             // lsvBill
             // 
@@ -135,6 +137,7 @@
             btnThanhToan.TabIndex = 7;
             btnThanhToan.Text = "Thanh Toán";
             btnThanhToan.UseVisualStyleBackColor = true;
+            btnThanhToan.Click += btnThanhToan_Click;
             // 
             // FormBanHang
             // 
