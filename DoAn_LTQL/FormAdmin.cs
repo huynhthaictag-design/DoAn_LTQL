@@ -177,17 +177,36 @@ namespace DoAn_LTQL
 
         private void dtgvThucUong_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            // Đảm bảo click vào vùng có dữ liệu
             if (e.RowIndex >= 0)
             {
-
                 DataGridViewRow row = dtgvThucUong.Rows[e.RowIndex];
 
+                // [LỚP GIÁP 1] Chặn ngay nếu lỡ click vào dòng trống mới (dòng có dấu * dưới cùng)
+                if (row.IsNewRow) return;
 
-                txtMaMon.Text = row.Cells["MaThucUong"].Value.ToString();
-                txtTenMon.Text = row.Cells["TenThucUong"].Value.ToString();
-                cbDanhMuc.SelectedValue = row.Cells["MaDanhMuc"].Value;
-                ndGiaTien.Value = Convert.ToDecimal(row.Cells["GiaBan"].Value);
+                // [LỚP GIÁP 2] Dùng try-catch để nhốt lỗi DBNull lại, phần mềm vẫn sống nhăn răng
+                try
+                {
+                    txtMaMon.Text = row.Cells["MaThucUong"].Value.ToString();
+                    txtTenMon.Text = row.Cells["TenThucUong"].Value.ToString();
+                    cbDanhMuc.SelectedValue = row.Cells["MaDanhMuc"].Value;
+
+                    // Xử lý an toàn cho cột Giá Bán
+                    if (row.Cells["GiaBan"].Value != DBNull.Value)
+                    {
+                        ndGiaTien.Value = Convert.ToDecimal(row.Cells["GiaBan"].Value);
+                    }
+                    else
+                    {
+                        ndGiaTien.Value = 0; // Nếu giá rỗng thì tự cho về 0
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Báo lỗi nhẹ nhàng thay vì văng app
+                    // MessageBox.Show("Có ô dữ liệu bị trống: " + ex.Message);
+                }
             }
         }
 
