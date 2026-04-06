@@ -4,7 +4,7 @@ namespace DoAn_LTQL
 {
     public partial class FormAdmin : Form
     {
-       
+
         public FormAdmin()
         {
             InitializeComponent();
@@ -12,22 +12,91 @@ namespace DoAn_LTQL
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM ThucUong";
-            dtgvThucUong.DataSource = DataProvider.Instance.ExecuteQuery(query);
+            LoadThucUong(); 
             string queryDanhMuc = "SELECT * FROM DanhMuc";
             DataTable dataDanhMuc = DataProvider.Instance.ExecuteQuery(queryDanhMuc);
 
             cbDanhMuc.DataSource = dataDanhMuc;
             cbDanhMuc.DisplayMember = "TenDanhMuc";
             cbDanhMuc.ValueMember = "MaDanhMuc";
-      
-
 
             LoadTaiKhoan();
 
             btnXemDanhMuc_Click(sender, e);
         }
+        void LoadThucUong()
+        {
+            string query = "SELECT * FROM ThucUong";
+            DataTable dtg = DataProvider.Instance.ExecuteQuery(query);
 
+            dtgvThucUong.DataSource = dtg;
+            dtgvThucUong.AllowUserToAddRows = false;
+            DataTable dttemp = (DataTable)dtgvThucUong.DataSource;
+
+            // Thêm cột ảnh
+            if (!dttemp.Columns.Contains("HinhAnh1"))
+            {
+                dttemp.Columns.Add("HinhAnh1", typeof(Image));
+            }
+
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            foreach (DataRow row in dttemp.Rows)
+            {
+                if (row["HinhAnh"] != DBNull.Value)
+                {
+                    string relativePath = row["HinhAnh"].ToString();
+
+                    string fullPath = Path.Combine(basePath, relativePath);
+
+                    if (File.Exists(fullPath))
+                    {
+                        try
+                        {
+
+                            byte[] bytes = File.ReadAllBytes(fullPath);
+                            using (MemoryStream ms = new MemoryStream(bytes))
+                            {
+                                Image img = Image.FromStream(ms);
+
+                                // resize giống form kia
+                                row["HinhAnh1"] = new Bitmap(img, 24, 24);
+                            }
+                        }
+                        catch
+                        {
+                            row["HinhAnh1"] = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        row["HinhAnh1"] = DBNull.Value;
+                    }
+                }
+                else
+                {
+                    row["HinhAnh1"] = DBNull.Value;
+                }
+            }
+
+            // Set header ảnh
+            if (dtgvThucUong.Columns.Contains("HinhAnh1"))
+            {
+                dtgvThucUong.Columns["HinhAnh1"].HeaderText = "Ảnh";
+
+                var col = (DataGridViewImageColumn)dtgvThucUong.Columns["HinhAnh1"];
+                col.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            }
+
+            // Ẩn cột path
+            if (dtgvThucUong.Columns.Contains("HinhAnh"))
+            {
+                dtgvThucUong.Columns["HinhAnh"].Visible = false;
+            }
+
+            dtgvThucUong.RowTemplate.Height = 50;
+            dtgvThucUong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
         private void LoadTaiKhoan()
         {
             string query = "SELECT * FROM TAIKHOAN";
@@ -422,7 +491,7 @@ namespace DoAn_LTQL
                 MessageBox.Show("Thêm danh mục thành công!", "Thông báo");
                 btnXemDanhMuc_Click(sender, e);
 
-                
+
             }
         }
 
