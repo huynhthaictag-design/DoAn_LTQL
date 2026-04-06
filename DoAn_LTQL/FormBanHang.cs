@@ -27,6 +27,7 @@ namespace DoAn_LTQL
 
             string query = "SELECT * FROM Ban";
             DataTable data = DataProvider.Instance.ExecuteQuery(query);
+             
 
             foreach (DataRow row in data.Rows)
             {
@@ -42,11 +43,11 @@ namespace DoAn_LTQL
              
                 if (trangThai == "Trống")
                 {
-                    btn.BackColor = Color.LightCyan; // Xanh lơ
+                    btn.BackColor = Color.LightCyan; 
                 }
                 else
                 {
-                    btn.BackColor = Color.LightPink; // Đỏ hồng
+                    btn.BackColor = Color.LightPink; 
                 }
 
           
@@ -240,6 +241,9 @@ namespace DoAn_LTQL
                 nmGiamGia.Value = 0;        
 
                 MessageBox.Show("Thanh toán thành công! Tiền đã vào két.", "Chốt sổ");
+
+
+             
             }
         }
     }

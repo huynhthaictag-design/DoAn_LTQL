@@ -11,8 +11,8 @@ namespace DoAn_LTQL
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FormBanHang());
-            // FormAdmin FormBanHang 
+            Application.Run(new FormThongKe());
+            // FormAdmin FormBanHang FormThongKe FormKhachHang FormNhanVien FormSanPham FormHoaDon FormChiTietHoaDon
         }
     }
 }
