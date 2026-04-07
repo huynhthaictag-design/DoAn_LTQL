@@ -12,7 +12,7 @@ namespace DoAn_LTQL
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadThucUong(); 
+            LoadThucUong();
             string queryDanhMuc = "SELECT * FROM DanhMuc";
             DataTable dataDanhMuc = DataProvider.Instance.ExecuteQuery(queryDanhMuc);
 
@@ -23,6 +23,11 @@ namespace DoAn_LTQL
             LoadTaiKhoan();
 
             btnXemDanhMuc_Click(sender, e);
+
+            TrangThaiGiaoDienBan(false);
+
+            TrangThaiGiaoDienMon(false);
+
         }
         void LoadThucUong()
         {
@@ -138,33 +143,34 @@ namespace DoAn_LTQL
             string query = "SELECT * FROM ThucUong";
             dtgvThucUong.DataSource = DataProvider.Instance.ExecuteQuery(query);
 
+        }
 
+        private int hanhDongMon = 0; // 1: Thêm, 2: Sửa
 
+        private void TrangThaiGiaoDienMon(bool dangThaoTac)
+        {
+            txtTenMon.ReadOnly = !dangThaoTac;
+            cbDanhMuc.Enabled = dangThaoTac;
+            ndGiaTien.Enabled = dangThaoTac;
+
+            btnLuuMon.Visible = dangThaoTac;
+            btnHuyMon.Visible = dangThaoTac;
+
+            btnThem.Enabled = !dangThaoTac;
+            btnSua.Enabled = !dangThaoTac;
+            btnXoa.Enabled = !dangThaoTac;
+            btnXem.Enabled = !dangThaoTac;
+            dtgvThucUong.Enabled = !dangThaoTac;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-
-            string tenMon = txtTenMon.Text;
-            string danhMuc = cbDanhMuc.SelectedValue.ToString();
-            float giaTien = (float)ndGiaTien.Value;
-
-            // 2. Viết câu lệnh SQL Thêm dữ liệu
-            string query = $"INSERT INTO ThucUong (TenThucUong, MaDanhMuc, GiaBan) VALUES (N'{tenMon}', {danhMuc}, {giaTien})";
-
-            // 3. Thực thi và kiểm tra
-            int result = DataProvider.Instance.ExecuteNonQuery(query);
-
-            if (result > 0)
-            {
-                MessageBox.Show("Thêm món mới thành công!", "Thông báo");
-                // Gọi lại nút Xem để làm mới cái bảng bên trái
-                btnXem_Click(sender, e);
-            }
-            else
-            {
-                MessageBox.Show("Có lỗi khi thêm món!", "Lỗi");
-            }
+            hanhDongMon = 1;
+            txtMaMon.Clear();
+            txtTenMon.Clear();
+            ndGiaTien.Value = 0;
+            TrangThaiGiaoDienMon(true);
+            txtTenMon.Focus();
         }
 
         private void btnNhap_Click(object sender, EventArgs e)
@@ -178,36 +184,13 @@ namespace DoAn_LTQL
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            // Kiểm tra xem có để trống Mã món không
             if (string.IsNullOrWhiteSpace(txtMaMon.Text))
             {
-                MessageBox.Show("Vui lòng nhập hoặc chọn Mã món cần sửa!", "Nhắc nhở");
+                MessageBox.Show("Vui lòng chọn 1 món để sửa!");
                 return;
             }
-
-            // Lấy dữ liệu
-            string id = txtMaMon.Text;
-            string tenMon = txtTenMon.Text;
-            string danhMuc = cbDanhMuc.SelectedValue.ToString(); // Lấy mã số từ ComboBox
-            float giaTien = (float)ndGiaTien.Value;
-
-            // Câu lệnh SQL UPDATE
-            string query = $"UPDATE ThucUong SET TenThucUong = N'{tenMon}', MaDanhMuc = {danhMuc}, GiaBan = {giaTien} WHERE MaThucUong = {id}";
-
-            try
-            {
-                int result = DataProvider.Instance.ExecuteNonQuery(query);
-
-                if (result > 0)
-                {
-                    MessageBox.Show("Sửa món thành công!", "Thông báo");
-                    btnXem_Click(sender, e); // Load lại lưới để thấy thay đổi
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Lỗi SQL");
-            }
+            hanhDongMon = 2;
+            TrangThaiGiaoDienMon(true);
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -241,6 +224,42 @@ namespace DoAn_LTQL
             catch (Exception ex)
             {
                 MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Lỗi SQL");
+            }
+        }
+        private void btnHuyMon_Click(object sender, EventArgs e)
+        {
+            hanhDongMon = 0;
+            TrangThaiGiaoDienMon(false);
+            btnXem_Click(sender, e);
+        }
+        private void btnLuuMon_Click(object sender, EventArgs e)
+        {
+            string tenMon = txtTenMon.Text.Trim();
+            if (string.IsNullOrEmpty(tenMon))
+            {
+                MessageBox.Show("Tên món không được để trống!"); return;
+            }
+
+            string danhMuc = cbDanhMuc.SelectedValue.ToString();
+            float giaTien = (float)ndGiaTien.Value;
+            string query = "";
+
+            if (hanhDongMon == 1)
+            {
+                query = $"INSERT INTO ThucUong (TenThucUong, MaDanhMuc, GiaBan) VALUES (N'{tenMon}', {danhMuc}, {giaTien})";
+            }
+            else if (hanhDongMon == 2)
+            {
+                string id = txtMaMon.Text;
+                query = $"UPDATE ThucUong SET TenThucUong = N'{tenMon}', MaDanhMuc = {danhMuc}, GiaBan = {giaTien} WHERE MaThucUong = {id}";
+            }
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Lưu món thành công!");
+                hanhDongMon = 0;
+                TrangThaiGiaoDienMon(false);
+                btnXem_Click(sender, e);
             }
         }
 
@@ -387,45 +406,43 @@ namespace DoAn_LTQL
             groupBox3.Visible = true;
         }
 
+        private int hanhDongBan = 0; // 1: Thêm, 2: Sửa
+
+        private void TrangThaiGiaoDienBan(bool dangThaoTac)
+        {
+            txtTenBan.ReadOnly = !dangThaoTac;
+            cbTrangThai.Enabled = dangThaoTac;
+
+            btnLuuBan.Visible = dangThaoTac;
+            btnHuyBan.Visible = dangThaoTac;
+
+            btnThemBan.Enabled = !dangThaoTac;
+            btnSuaBan.Enabled = !dangThaoTac;
+            btnXoaBan.Enabled = !dangThaoTac;
+            btnXemBan.Enabled = !dangThaoTac;
+            dtgvBan.Enabled = !dangThaoTac;
+        }
+
         private void btnThemBan_Click(object sender, EventArgs e)
         {
-            string tenBan = txtTenBan.Text;
-
-            if (string.IsNullOrWhiteSpace(tenBan))
-            {
-                MessageBox.Show("Vui lòng nhập Tên bàn!", "Nhắc nhở");
-                return;
-            }
-
-            // Khi thêm bàn mới, mặc định trạng thái luôn là 'Trống'
-            string query = $"INSERT INTO Ban (TenBan, TrangThai) VALUES (N'{tenBan}', N'Trống')";
-
-            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
-            {
-                MessageBox.Show("Thêm bàn thành công!", "Thông báo");
-                btnXemBan_Click(sender, e);
-            }
+            hanhDongBan = 1;
+            txtMaBan.Clear();
+            txtTenBan.Clear();
+            cbTrangThai.Text = "Trống"; // Mặc định thêm mới là Trống
+            cbTrangThai.Enabled = false; // Thêm mới thì không cho đổi trạng thái
+            TrangThaiGiaoDienBan(true);
+            txtTenBan.Focus();
         }
 
         private void btnSuaBan_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtMaBan.Text))
             {
-                MessageBox.Show("Vui lòng chọn bàn cần sửa từ danh sách bên trái!", "Nhắc nhở");
+                MessageBox.Show("Vui lòng chọn 1 bàn để sửa!");
                 return;
             }
-
-            string id = txtMaBan.Text;
-            string tenBan = txtTenBan.Text;
-            string trangThai = cbTrangThai.Text;
-
-            string query = $"UPDATE Ban SET TenBan = N'{tenBan}', TrangThai = N'{trangThai}' WHERE MaBan = {id}";
-
-            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
-            {
-                MessageBox.Show("Sửa thông tin bàn thành công!", "Thông báo");
-                btnXemBan_Click(sender, e); // Load lại lưới
-            }
+            hanhDongBan = 2;
+            TrangThaiGiaoDienBan(true);
         }
 
         private void btnXoaBan_Click(object sender, EventArgs e)
@@ -456,6 +473,42 @@ namespace DoAn_LTQL
             }
         }
 
+        private void btnHuyBan_Click(object sender, EventArgs e)
+        {
+            hanhDongBan = 0;
+            TrangThaiGiaoDienBan(false);
+            btnXemBan_Click(sender, e); // Load lại dữ liệu gốc
+        }
+
+        private void btnLuuBan_Click(object sender, EventArgs e)
+        {
+            string tenBan = txtTenBan.Text.Trim();
+            if (string.IsNullOrEmpty(tenBan))
+            {
+                MessageBox.Show("Tên bàn không được để trống!"); return;
+            }
+
+            string query = "";
+            if (hanhDongBan == 1)
+            {
+                query = $"INSERT INTO Ban (TenBan, TrangThai) VALUES (N'{tenBan}', N'Trống')";
+            }
+            else if (hanhDongBan == 2)
+            {
+                string id = txtMaBan.Text;
+                string trangThai = cbTrangThai.Text;
+                query = $"UPDATE Ban SET TenBan = N'{tenBan}', TrangThai = N'{trangThai}' WHERE MaBan = {id}";
+            }
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Lưu bàn thành công!");
+                hanhDongBan = 0;
+                TrangThaiGiaoDienBan(false);
+                btnXemBan_Click(sender, e);
+            }
+        }
+
         private void dtgvBan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -468,6 +521,23 @@ namespace DoAn_LTQL
             }
         }
 
+        private int hanhDongDanhMuc = 0; // 1: Thêm, 2: Sửa
+
+        private void TrangThaiGiaoDienDanhMuc(bool dangThaoTac)
+        {
+            txtTenDanhMuc.ReadOnly = !dangThaoTac;
+
+            btnLuuDanhMuc.Visible = dangThaoTac;
+            btnHuyDanhMuc.Visible = dangThaoTac;
+
+            btnThemDanhMuc.Enabled = !dangThaoTac;
+            btnSuaDanhMuc.Enabled = !dangThaoTac;
+            btnXoaDanhMuc.Enabled = !dangThaoTac;
+            btnXemDanhMuc.Enabled = !dangThaoTac;
+
+            dtgvDanhMuc.Enabled = !dangThaoTac;
+        }
+
         private void btnXemDanhMuc_Click(object sender, EventArgs e)
         {
             string query = "SELECT * FROM DanhMuc";
@@ -476,43 +546,24 @@ namespace DoAn_LTQL
 
         private void btnThemDanhMuc_Click(object sender, EventArgs e)
         {
-            string tenDM = txtTenDanhMuc.Text;
+            hanhDongDanhMuc = 1;
+            txtMaDanhMuc.Clear();
+            txtTenDanhMuc.Clear();
 
-            if (string.IsNullOrWhiteSpace(tenDM))
-            {
-                MessageBox.Show("Vui lòng nhập Tên danh mục!", "Nhắc nhở");
-                return;
-            }
-
-            string query = $"INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'{tenDM}')";
-
-            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
-            {
-                MessageBox.Show("Thêm danh mục thành công!", "Thông báo");
-                btnXemDanhMuc_Click(sender, e);
-
-
-            }
+            TrangThaiGiaoDienDanhMuc(true);
+            txtTenDanhMuc.Focus();
         }
 
         private void btnSuaDanhMuc_Click(object sender, EventArgs e)
         {
-            string id = txtMaDanhMuc.Text;
-            string tenDM = txtTenDanhMuc.Text;
-
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(txtMaDanhMuc.Text))
             {
-                MessageBox.Show("Vui lòng chọn danh mục cần sửa!", "Nhắc nhở");
+                MessageBox.Show("Vui lòng chọn danh mục để sửa!");
                 return;
             }
 
-            string query = $"UPDATE DanhMuc SET TenDanhMuc = N'{tenDM}' WHERE MaDanhMuc = {id}";
-
-            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
-            {
-                MessageBox.Show("Sửa danh mục thành công!", "Thông báo");
-                btnXemDanhMuc_Click(sender, e);
-            }
+            hanhDongDanhMuc = 2;
+            TrangThaiGiaoDienDanhMuc(true);
         }
 
         private void btnXoaDanhMuc_Click(object sender, EventArgs e)
@@ -542,6 +593,44 @@ namespace DoAn_LTQL
                     MessageBox.Show("Không thể xóa! Danh mục này đang chứa các món đồ uống. Vui lòng xóa hết các món thuộc danh mục này trước.\nLỗi chi tiết: " + ex.Message, "Lỗi SQL");
                 }
             }
+        }
+        private void btnLuuDanhMuc_Click(object sender, EventArgs e)
+        {
+            string tenDanhMuc = txtTenDanhMuc.Text.Trim();
+
+            if (string.IsNullOrEmpty(tenDanhMuc))
+            {
+                MessageBox.Show("Tên danh mục không được để trống!");
+                return;
+            }
+
+            string query = "";
+
+            if (hanhDongDanhMuc == 1)
+            {
+                // THÊM
+                query = $"INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'{tenDanhMuc}')";
+            }
+            else if (hanhDongDanhMuc == 2)
+            {
+                // SỬA
+                string id = txtMaDanhMuc.Text;
+                query = $"UPDATE DanhMuc SET TenDanhMuc = N'{tenDanhMuc}' WHERE MaDanhMuc = {id}";
+            }
+
+            if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
+            {
+                MessageBox.Show("Thành công!");
+                hanhDongDanhMuc = 0;
+                TrangThaiGiaoDienDanhMuc(false);
+                btnXemDanhMuc_Click(sender, e);
+            }
+        }
+        private void btnHuyDanhMuc_Click(object sender, EventArgs e)
+        {
+            hanhDongDanhMuc = 0;
+            TrangThaiGiaoDienDanhMuc(false);
+            btnXemDanhMuc_Click(sender, e);
         }
 
         private void dtgvDanhMuc_CellClick(object sender, DataGridViewCellEventArgs e)
