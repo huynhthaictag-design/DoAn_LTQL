@@ -52,6 +52,7 @@
             cbTrangThai = new ComboBox();
             txtTenBan = new TextBox();
             btnHuyBan = new Button();
+            btnNhapBan = new Button();
             btnLuuBan = new Button();
             txtMaBan = new TextBox();
             label7 = new Label();
@@ -66,6 +67,7 @@
             tabPage2 = new TabPage();
             groupBox4 = new GroupBox();
             btnHuyDanhMuc = new Button();
+            btnNhapDanhMuc = new Button();
             btnLuuDanhMuc = new Button();
             label10 = new Label();
             txtMaDanhMuc = new TextBox();
@@ -345,6 +347,7 @@
             groupBox3.Controls.Add(cbTrangThai);
             groupBox3.Controls.Add(txtTenBan);
             groupBox3.Controls.Add(btnHuyBan);
+            groupBox3.Controls.Add(btnNhapBan);
             groupBox3.Controls.Add(btnLuuBan);
             groupBox3.Controls.Add(txtMaBan);
             groupBox3.Controls.Add(label7);
@@ -381,7 +384,7 @@
             // 
             // btnHuyBan
             // 
-            btnHuyBan.Location = new Point(189, 215);
+            btnHuyBan.Location = new Point(97, 278);
             btnHuyBan.Margin = new Padding(4, 3, 4, 3);
             btnHuyBan.Name = "btnHuyBan";
             btnHuyBan.Size = new Size(117, 37);
@@ -391,9 +394,21 @@
             btnHuyBan.Visible = false;
             btnHuyBan.Click += btnHuyBan_Click;
             // 
+            // btnNhapBan
+            // 
+            btnNhapBan.Location = new Point(4, 210);
+            btnNhapBan.Margin = new Padding(4, 3, 4, 3);
+            btnNhapBan.Name = "btnNhapBan";
+            btnNhapBan.Size = new Size(117, 37);
+            btnNhapBan.TabIndex = 1;
+            btnNhapBan.Text = "Nhập";
+            btnNhapBan.UseVisualStyleBackColor = true;
+            btnNhapBan.Visible = false;
+            btnNhapBan.Click += btnNhapBan_Click;
+            // 
             // btnLuuBan
             // 
-            btnLuuBan.Location = new Point(4, 215);
+            btnLuuBan.Location = new Point(193, 210);
             btnLuuBan.Margin = new Padding(4, 3, 4, 3);
             btnLuuBan.Name = "btnLuuBan";
             btnLuuBan.Size = new Size(117, 37);
@@ -533,6 +548,7 @@
             // groupBox4
             // 
             groupBox4.Controls.Add(btnHuyDanhMuc);
+            groupBox4.Controls.Add(btnNhapDanhMuc);
             groupBox4.Controls.Add(btnLuuDanhMuc);
             groupBox4.Controls.Add(label10);
             groupBox4.Controls.Add(txtMaDanhMuc);
@@ -549,7 +565,7 @@
             // 
             // btnHuyDanhMuc
             // 
-            btnHuyDanhMuc.Location = new Point(193, 181);
+            btnHuyDanhMuc.Location = new Point(104, 257);
             btnHuyDanhMuc.Name = "btnHuyDanhMuc";
             btnHuyDanhMuc.Size = new Size(112, 34);
             btnHuyDanhMuc.TabIndex = 4;
@@ -557,9 +573,19 @@
             btnHuyDanhMuc.UseVisualStyleBackColor = true;
             btnHuyDanhMuc.Click += btnHuyDanhMuc_Click;
             // 
+            // btnNhapDanhMuc
+            // 
+            btnNhapDanhMuc.Location = new Point(7, 183);
+            btnNhapDanhMuc.Name = "btnNhapDanhMuc";
+            btnNhapDanhMuc.Size = new Size(112, 34);
+            btnNhapDanhMuc.TabIndex = 4;
+            btnNhapDanhMuc.Text = "Nhập";
+            btnNhapDanhMuc.UseVisualStyleBackColor = true;
+            btnNhapDanhMuc.Click += btnNhapDanhMuc_Click;
+            // 
             // btnLuuDanhMuc
             // 
-            btnLuuDanhMuc.Location = new Point(7, 181);
+            btnLuuDanhMuc.Location = new Point(193, 183);
             btnLuuDanhMuc.Name = "btnLuuDanhMuc";
             btnLuuDanhMuc.Size = new Size(112, 34);
             btnLuuDanhMuc.TabIndex = 4;
@@ -585,6 +611,7 @@
             txtMaDanhMuc.ReadOnly = true;
             txtMaDanhMuc.Size = new Size(158, 31);
             txtMaDanhMuc.TabIndex = 3;
+            txtMaDanhMuc.Visible = false;
             // 
             // label11
             // 
@@ -602,6 +629,7 @@
             txtTenDanhMuc.Name = "txtTenDanhMuc";
             txtTenDanhMuc.Size = new Size(158, 31);
             txtTenDanhMuc.TabIndex = 2;
+            txtTenDanhMuc.Visible = false;
             // 
             // btnXoaDanhMuc
             // 
@@ -915,5 +943,7 @@
         private Button btnLuuBan;
         private Button btnHuyDanhMuc;
         private Button btnLuuDanhMuc;
+        private Button btnNhapBan;
+        private Button btnNhapDanhMuc;
     }
 }

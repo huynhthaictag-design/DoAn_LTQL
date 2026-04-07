@@ -403,6 +403,7 @@ namespace DoAn_LTQL
             btnThemBan.Visible = true;
             btnSuaBan.Visible = true;
             btnXoaBan.Visible = true;
+            btnNhapBan.Visible = true;
             groupBox3.Visible = true;
         }
 
@@ -429,7 +430,7 @@ namespace DoAn_LTQL
             txtMaBan.Clear();
             txtTenBan.Clear();
             cbTrangThai.Text = "Trống"; // Mặc định thêm mới là Trống
-            cbTrangThai.Enabled = false; // Thêm mới thì không cho đổi trạng thái
+            cbTrangThai.Enabled = false;
             TrangThaiGiaoDienBan(true);
             txtTenBan.Focus();
         }
@@ -479,7 +480,23 @@ namespace DoAn_LTQL
             TrangThaiGiaoDienBan(false);
             btnXemBan_Click(sender, e); // Load lại dữ liệu gốc
         }
+        private void btnNhapBan_Click(object sender, EventArgs e)
+        {
+            txtTenBan.ReadOnly = false;
+            cbTrangThai.Enabled = true;
 
+            btnThemBan.Enabled = true;
+            btnSuaBan.Enabled = true;
+            btnXoaBan.Enabled = true;
+            btnXemBan.Enabled = true;
+
+            dtgvBan.Enabled = true;
+
+            btnLuuBan.Visible = false;
+            btnHuyBan.Visible = false;
+
+        }
+        
         private void btnLuuBan_Click(object sender, EventArgs e)
         {
             string tenBan = txtTenBan.Text.Trim();
@@ -547,6 +564,8 @@ namespace DoAn_LTQL
         private void btnThemDanhMuc_Click(object sender, EventArgs e)
         {
             hanhDongDanhMuc = 1;
+            txtMaDanhMuc.Visible = true;
+            txtTenDanhMuc.Visible = true;
             txtMaDanhMuc.Clear();
             txtTenDanhMuc.Clear();
 
@@ -594,6 +613,24 @@ namespace DoAn_LTQL
                 }
             }
         }
+
+        private void btnNhapDanhMuc_Click(object sender, EventArgs e)
+        {
+
+            txtTenDanhMuc.ReadOnly = false;
+
+            btnThemDanhMuc.Enabled = true;
+            btnSuaDanhMuc.Enabled = true;
+            btnXoaDanhMuc.Enabled = true;
+            btnXemDanhMuc.Enabled = true;
+
+            dtgvDanhMuc.Enabled = true;
+
+            // Ẩn nút Lưu/Hủy (chưa thao tác gì)
+            btnLuuDanhMuc.Visible = false;
+            btnHuyDanhMuc.Visible = false;
+        }
+
         private void btnLuuDanhMuc_Click(object sender, EventArgs e)
         {
             string tenDanhMuc = txtTenDanhMuc.Text.Trim();
@@ -620,7 +657,7 @@ namespace DoAn_LTQL
 
             if (DataProvider.Instance.ExecuteNonQuery(query) > 0)
             {
-                MessageBox.Show("Thành công!");
+                MessageBox.Show("Lưu thành công!");
                 hanhDongDanhMuc = 0;
                 TrangThaiGiaoDienDanhMuc(false);
                 btnXemDanhMuc_Click(sender, e);
