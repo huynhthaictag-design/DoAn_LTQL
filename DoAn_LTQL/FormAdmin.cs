@@ -27,7 +27,9 @@ namespace DoAn_LTQL
             TrangThaiGiaoDienBan(false);
 
             TrangThaiGiaoDienMon(false);
-
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
         }
         void LoadThucUong()
         {
@@ -64,7 +66,6 @@ namespace DoAn_LTQL
                             {
                                 Image img = Image.FromStream(ms);
 
-                                // resize giống form kia
                                 row["HinhAnh1"] = new Bitmap(img, 24, 24);
                             }
                         }
@@ -138,13 +139,6 @@ namespace DoAn_LTQL
 
         }
 
-        private void btnXem_Click(object sender, EventArgs e)
-        {
-            string query = "SELECT * FROM ThucUong";
-            dtgvThucUong.DataSource = DataProvider.Instance.ExecuteQuery(query);
-
-        }
-
         private int hanhDongMon = 0; // 1: Thêm, 2: Sửa
 
         private void TrangThaiGiaoDienMon(bool dangThaoTac)
@@ -159,7 +153,6 @@ namespace DoAn_LTQL
             btnThem.Enabled = !dangThaoTac;
             btnSua.Enabled = !dangThaoTac;
             btnXoa.Enabled = !dangThaoTac;
-            btnXem.Enabled = !dangThaoTac;
             dtgvThucUong.Enabled = !dangThaoTac;
         }
 
@@ -175,7 +168,9 @@ namespace DoAn_LTQL
 
         private void btnNhap_Click(object sender, EventArgs e)
         {
-            btnThem.Visible = true;
+            btnThem.Enabled = true;
+            btnSua.Enabled = true;
+            btnXoa.Enabled = true;
             txtMaMon.Visible = true;
             txtTenMon.Visible = true;
             cbDanhMuc.Visible = true;
@@ -209,7 +204,6 @@ namespace DoAn_LTQL
 
             try
             {
-                // Hiển thị hộp thoại hỏi lại cho chắc chắn (tránh lỡ tay bấm nhầm)
                 if (MessageBox.Show("Bạn có chắc chắn muốn xóa món này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int result = DataProvider.Instance.ExecuteNonQuery(query);
@@ -217,7 +211,7 @@ namespace DoAn_LTQL
                     if (result > 0)
                     {
                         MessageBox.Show("Xóa món thành công!", "Thông báo");
-                        btnXem_Click(sender, e); // Load lại lưới
+                        LoadThucUong();
                     }
                 }
             }
@@ -230,7 +224,7 @@ namespace DoAn_LTQL
         {
             hanhDongMon = 0;
             TrangThaiGiaoDienMon(false);
-            btnXem_Click(sender, e);
+            LoadThucUong();
         }
         private void btnLuuMon_Click(object sender, EventArgs e)
         {
@@ -259,7 +253,7 @@ namespace DoAn_LTQL
                 MessageBox.Show("Lưu món thành công!");
                 hanhDongMon = 0;
                 TrangThaiGiaoDienMon(false);
-                btnXem_Click(sender, e);
+                LoadThucUong();
             }
         }
 
